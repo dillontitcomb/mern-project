@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const Post = require('../../models/Posts');
+const Profile = require('../../models/Profile');
 
 // Validation
 const validatePostInput = require('../../validation/post');
@@ -28,7 +29,9 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   Post.findById(req.params.id)
     .then(post => res.json(post))
-    .catch(err => res.status(404).json({ nopostfound: 'No post found with that ID' }));
+    .catch(err =>
+      res.status(404).json({ nopostfound: 'No post found with that ID' })
+    );
 });
 
 // TODO: Change name and avatar to come from body rather than user
@@ -50,6 +53,30 @@ router.post(
       user: req.user.id
     });
     newPost.save().then(post => res.json(post));
+  }
+);
+
+// @route   DELETE api/posts/:id
+// @desc    Delete post by ID
+// @access  Private
+router.delete(
+  '/:post_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      Post.findById(req.params.post_id)
+        .then(post => {
+          // Confirm that post owner is same as profile owner
+          if (post.user.toString() !== req.user.id) {
+            return res
+              .status(401)
+              .json({ notauthorized: 'User not authorized' });
+          }
+          // Delete
+          post.remove().then(() => res.json({ success: true }));
+        })
+        .catch(err => res.status(404).json({ postnotfound: 'Post not found' }));
+    });
   }
 );
 
