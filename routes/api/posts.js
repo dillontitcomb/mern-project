@@ -107,4 +107,31 @@ router.post(
   }
 );
 
+// @route   POST api/posts/unlike/:id
+// @desc    Remove like from post
+// @access  Private
+router.post(
+  '/unlike/:post_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (
+          post.likes.filter(like => like.user.toString() === req.user.id)
+            .length === 0
+        ) {
+          return res.status(400).json({
+            notliked: 'You have not yet liked this post'
+          });
+        }
+        const removeIndex = post.likes
+          .map(like => like.user.toString())
+          .indexOf(req.params.post_id);
+        post.likes.splice(removeIndex, 1);
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
+  }
+);
+
 module.exports = router;
