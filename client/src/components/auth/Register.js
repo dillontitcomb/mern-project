@@ -16,6 +16,13 @@ class Register extends Component {
     };
   }
 
+  // Add any errors that appear to COMPONENT state, rather than global state
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   onSubmit = e => {
@@ -30,11 +37,6 @@ class Register extends Component {
 
     // Send newUser data to registerUser action creator which dispatches to auth reducer
     this.props.registerUser(newUser);
-
-    // axios
-    //   .post('/api/users/register', newUser)
-    //   .then(res => console.log(res.data))
-    //   .catch(err => this.setState({ errors: err.response.data }));
   };
 
   render() {
@@ -125,11 +127,13 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 
 export default connect(
