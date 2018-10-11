@@ -21,7 +21,13 @@ class Navbar extends Component {
             onClick={this.onLogoutClick.bind(this)}
             className="nav-link"
           >
-            <img className='rounded-circle' src={user.avatar} alt={user.name} style={{width: '25px', marginRight: '5px'}} title="You must have a Gravatar connected to your email to display an image" />
+            <img
+              className="rounded-circle"
+              src={user.avatar}
+              alt={user.name}
+              style={{ width: '25px', marginRight: '5px' }}
+              title="You must have a Gravatar connected to your email to display an image"
+            />
             Logout
           </a>
         </li>
@@ -74,14 +80,14 @@ class Navbar extends Component {
   }
 }
 
-Navbar.PropTypes = {
+Navbar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   auth: state.auth
-})
+});
 
 export default connect(
   mapStateToProps,
