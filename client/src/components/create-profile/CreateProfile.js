@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
