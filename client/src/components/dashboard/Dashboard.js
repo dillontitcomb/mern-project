@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getCurrentProfile, deleteAccount } from '../../actions/profileActions';
+import { deleteAccount, getCurrentProfile } from '../../actions/profileActions';
 import Spinner from '../common/spinner';
+import Experience from './Experience';
 import ProfileActions from './ProfileActions';
-
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -34,6 +34,8 @@ class Dashboard extends Component {
             </p>
             <ProfileActions />
             {/* TODO: exp and edu */}
+            <Experience experience={profile.experience} />
+
             <div style={{ marginBottom: '60px' }} />
             <button
               onClick={this.onDeleteClick.bind(this)}
