@@ -55,7 +55,6 @@ export const clearCurrentProfile = () => {
 };
 
 // Add Experience
-
 export const addExperience = (expData, history) => dispatch => {
   axios
     .post('/api/profile/experience', expData)
@@ -69,7 +68,6 @@ export const addExperience = (expData, history) => dispatch => {
 };
 
 // Add Education
-
 export const addEducation = (eduData, history) => dispatch => {
   axios
     .post('/api/profile/education', eduData)
@@ -108,7 +106,7 @@ export const deleteEducation = id => dispatch => {
     );
 };
 
-// Get Profiles
+// Get all profiles
 export const getProfiles = () => dispatch => {
   dispatch(setProfileLoading());
   axios
