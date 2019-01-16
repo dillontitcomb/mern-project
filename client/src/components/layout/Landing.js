@@ -1,15 +1,30 @@
+import axios from 'axios';
+import { PropTypes } from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { PropTypes} from 'prop-types'
-import { connect } from 'react-redux'
+
+const handleTestButtonClick = () => {
+  console.log('Clicked!');
+  axios
+    .get('/api/profile/test/writefile')
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+};
+const handleSecondTestButtonClick = () => {
+  console.log('2nd Button Clicked!');
+  axios
+    .get('/api/profile/test/readfile')
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+};
 
 class Landing extends Component {
-
   componentDidMount() {
-  if(this.props.auth.isAuthenticated) {
-    this.props.history.push('/dashboard')
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
   }
-}
   render() {
     return (
       <div className="landing">
@@ -29,6 +44,18 @@ class Landing extends Component {
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
+                <button
+                  className="btn btn-lg btn-secondary"
+                  onClick={handleTestButtonClick}
+                >
+                  Test Button
+                </button>
+                <button
+                  className="btn btn-lg btn-secondary"
+                  onClick={handleSecondTestButtonClick}
+                >
+                  Second Test Button
+                </button>
               </div>
             </div>
           </div>
@@ -39,11 +66,10 @@ class Landing extends Component {
 }
 Landing.propTypes = {
   auth: PropTypes.object.isRequired
+};
 
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   auth: state.auth
-})
+});
 
 export default connect(mapStateToProps)(Landing);

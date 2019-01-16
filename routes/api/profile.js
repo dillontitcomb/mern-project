@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const keys = require('../../config/keys');
+const fs = require('fs');
 
 // Load Validation
 const validateProfileInput = require('../../validation/profile');
@@ -17,7 +18,32 @@ const User = require('../../models/User');
 // @route   GET api/profile/test
 // @desc    Tests profile route
 // @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Profile works' }));
+router.get('/test', (req, res) =>
+  res.json({ msg: 'New text in profile works!' })
+);
+
+router.get('/test/writefile', (req, res) => {
+  fs.writeFile(
+    '/users/dillo/Desktop/mern-project/client/src/files/newFile.txt',
+    "Hello here's the content!",
+    err => console.log(err)
+  );
+  console.log('File written!');
+  res.json({ msg: 'Writefile test works' });
+});
+
+router.get('/test/readfile', (req, res) => {
+  let returnedData;
+  fs.readFile(
+    '/users/dillo/Desktop/mern-project/client/src/files/newFile.txt',
+    'utf-8',
+    (err, data) => {
+      if (err) throw err;
+      returnedData = data.toString();
+      res.send(returnedData);
+    }
+  );
+});
 
 // @route   GET api/profile
 // @desc    Get current user's profile
